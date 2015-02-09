@@ -29,9 +29,9 @@ class NewVisitorTest(unittest.TestCase):
         # Page updates to add the to-do item
         inputbox.send_keys(Keys.ENTER)
         
-        table - self.browser.find_element_by_id('id_list_table')
+        table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(any(row.text == '1: Buy peacock feathers' for row in rows))
+        self.assertTrue(any(row.text == '1: Buy peacock feathers' for row in rows), "New to-do item did not show up in the table")
         
         # Another box asking for another to-do item
         self.fail('Finished the test!')
