@@ -6,10 +6,10 @@ class NewVisitorTest(unittest.TestCase):
     def setUp(self):
         self.browser = webdriver.Firefox()
         self.browser.implicitly_wait(3)
-	
+    
     def tearDown(self):
         self.browser.quit()
-		
+        
     def test_can_start_a_list_and_retrieve_it_later(self):
         # Go to the home page
         self.browser.get('http://localhost:8000')
@@ -31,9 +31,19 @@ class NewVisitorTest(unittest.TestCase):
         
         table = self.browser.find_element_by_id('id_list_table')
         rows = table.find_elements_by_tag_name('tr')
-        self.assertTrue(any(row.text == '1: Buy peacock feathers' for row in rows), "New to-do item did not show up in the table")
+        self.assertTrue(any(row.text == '1: Buy peacock feathers' for row in rows), "New to-do item did not show up in the table: %s" % table.text)
         
         # Another box asking for another to-do item
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Use peakcock feathers to make a fly')
+        inputbox.send_keys(Keys.ENTER)
+        
+        # The page updates again and shows two items
+        table = self.browser.find_element_by_id('id_list_table')
+        rows = table.find_elements_by_tag_name('tr')
+        self.assertIn('1: Buy peacock feathers', [row.text for row in rows])
+        self.assertIn('2: Use peakcock feathers to make a fly', [row.text for row in rows])
+        
         self.fail('Finished the test!')
 
 if __name__ == "__main__":
