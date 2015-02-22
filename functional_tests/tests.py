@@ -34,7 +34,8 @@ class NewVisitorTest(LiveServerTestCase):
         
         # Page updates to add the to-do item
         inputbox.send_keys(Keys.ENTER)
-        
+        my_list_url = self.browser.current_url
+        self.assertRegexpMatches(my_list_url, '/lists/.+')
         self.check_for_row_in_list_table('1: Buy peacock feathers')
         
         # Another box asking for another to-do item
@@ -45,6 +46,32 @@ class NewVisitorTest(LiveServerTestCase):
         # The page updates again and shows two items
         self.check_for_row_in_list_table('1: Buy peacock feathers')
         self.check_for_row_in_list_table('2: Use peakcock feathers to make a fly')
+        
+        ## Start a new browser session. Making sure none the previous information 
+        # Another user comes and start a new session
+        self.browser.quit()
+        self.browser = webdriver.Firefox()
+        
+        # Check if any of previous session items is shown
+        self.browser.get(self.live_server_url)
+        page_text = self.browser.find_element_by_tag_name('body').text
+        self.assertNotIn('Buy peacock feathers', page_text)
+        self.assertNotIn('Use peakcock feathers to make a fly', page_text)
+        
+        # Start a new list by entering a new item
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        inputbox.send_keys('Buy milk')
+        inputbox.send_keys(Keys.ENTER)
+        
+        # Compare the new list url with the previous one and make sure they are different
+        new_list_url = self.browser.current_url
+        self.assertRegexpMatches(new_list_url, '/lists/.+')
+        self.assertNotEqual(new_list_url, my_list_url)
+        
+        # Make sure only items of the new list are shown
+        page_text = self.browser.find_element_by_tag_name('body')
+        self.assertNotIn('Buy peacock feathers', page_text)
+        self.assertIn('Buy milk', page_text)
         
         self.fail('Finished the test!')
 
