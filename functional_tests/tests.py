@@ -74,4 +74,24 @@ class NewVisitorTest(LiveServerTestCase):
         self.assertIn('Buy milk', page_text)
         
         self.fail('Finished the test!')
+        
+    def test_layout_and_styling(self):
+        # Go to the home page
+        self.browser.get(self.live_server_url)
+        self.browser.set_window_size(1024, 768)
+        
+        # Input box should be centered
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2,
+            512,
+            delta = 5)
+            
+        # Starts a new list and the input should centered
+        inputbox.send_keys('testing\n')
+        inputbox = self.browser.find_element_by_id('id_new_item')
+        self.assertAlmostEqual(
+            inputbox.location['x'] + inputbox.size['width'] / 2,
+            512,
+            delta = 5)
 
