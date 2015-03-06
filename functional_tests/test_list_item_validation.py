@@ -9,7 +9,7 @@ class ItemValidationTest(FunctionalTest):
         
         # Home page refreshes, and an error message saying the list item cannot be empty
         error = self.browser.find_element_by_css_selector('.has-error')
-        self.assertEqual(error.test, "You can't have an empty list item")
+        self.assertEqual(error.text, "You can't have an empty list item")
         
         # Enter a non-empty item and it works
         self.browser.find_element_by_id('id_new_item').send_keys('Buy milk\n')
@@ -18,7 +18,7 @@ class ItemValidationTest(FunctionalTest):
         # Enter an empty item again, another error message shows update
         self.browser.find_element_by_id('id_new_item').send_keys('\n')
         error = self.browser.find_element_by_css_selector('.has-error')
-        self.assertEqual(error.test, "You can't have an empty list item")
+        self.assertEqual(error.text, "You can't have an empty list item")
         
         # Fix it by filling some text in
         self.browser.find_element_by_id('id_new_item').send_keys('Make tea\n')
