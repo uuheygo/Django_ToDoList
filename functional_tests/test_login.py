@@ -35,6 +35,6 @@ class LoginTest(FunctionalTest):
         self. fail('could not find window' )
         
     def wait_for_element_with_id(self, element_id):
-        WebDriverWait(self. browser, timeout=30). until(
+        WebDriverWait(self. browser, timeout=10). until(
         lambda b: b. find_element_by_id(element_id)
  )
