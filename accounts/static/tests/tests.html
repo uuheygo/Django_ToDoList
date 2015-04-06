@@ -16,21 +16,23 @@
 <script src="../accounts.js" ></script>
 <script>
 
-test("initialize binds sign in button to navigator.id.request", function () {
-	var requestWasCalled = false;
-	var mockRequestFunction = function () { requestWasCalled = true; };
-	var mockNavigator = {
-		id: {
-			request: mockRequestFunction,
-			doSomethingElse: function() {console.log("called me!");}
-		}
-	};
+test("initialize calls navigator.id.watch" , function () {
+	 var user = 'current user' ;
+	 var token = 'csrf token' ;
+	 var urls = {login: 'login url' , logout: 'logout url' };
+	 var mockNavigator = {
+	 id: {
+	 watch: sinon. mock() //
+	 }
+	 };
+	 Superlists. Accounts. initialize(mockNavigator, user, token, urls);
+	 equal(
+	 mockNavigator. id. watch. calledOnce, //
+	 true,
+	 'check watch function called'
+	 );
+	});
 	
-	Superlists.Accounts.initialize(mockNavigator);
-	equal(requestWasCalled, false, 'check request not called before click');
-	$('#id_login').trigger('click');
-	equal(requestWasCalled, true);
-});
 </script>
 </body>
 </html>
