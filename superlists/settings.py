@@ -24,13 +24,15 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-ALLOWED_HOSTS = []
+# this setting is changed by the deploy script
+DOMAIN = 'localhost'
+ALLOWED_HOSTS = [DOMAIN]
 
 
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
+    #'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
@@ -38,6 +40,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'lists',
     'accounts',
+    'functional_tests',
 )
 
 MIDDLEWARE_CLASSES = (
